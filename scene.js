@@ -53,22 +53,22 @@ class Scene_Particles extends Scene {
 
         if (level > threshold) {
             let rate = map(level, 0, 1, 0, 5);
-            this.createParticles(rate);
+            this.createParticles(pg, rate);
         }
 
         for (let p of this.particles)
             p.display(pg);
     }
 
-    createParticles(rate) {
+    createParticles(pg, rate) {
         if (rate < 1 && random()<rate)
-            this.createParticle();
+            this.createParticle(pg);
 
         for (let i=0; i<rate; i++)
-            this.createParticle();
+            this.createParticle(pg);
     }
 
-    createParticle() {
+    createParticle(pg) {
         let position = createVector(pg.width/2, pg.height/2);
         let velocity = p5.Vector.fromAngle(random(5*PI/4, 7*PI/4));
         velocity.setMag(random(3, 7));
@@ -78,6 +78,32 @@ class Scene_Particles extends Scene {
         let p = new Particle(position, velocity, acceleration, radius, c);
         this.particles.push(p);
     }
+} // class Scene_Particles 
+
+
+class Scene_Quad extends Scene {
+    constructor(pg, child) {
+        super();
+        this.child = child;
+        this.mypg = createGraphics(pg.width/2, pg.height/2);
+    }
+
+    name() {return "Quad";}
+
+    child;
+    mypg;
+
+    display(pg, audioIn) {
+        pg.background(0);
+
+        this.child.display(this.mypg, audioIn);
+
+        pg.image(this.mypg, 0, 0);
+        pg.image(this.mypg, width/2, 0);
+        pg.image(this.mypg, width/2, height/2);
+        pg.image(this.mypg, 0, height/2);
+    }
 }
+
 
 

@@ -21,6 +21,7 @@ function setup() {
     scenes.push(new Scene_Black());
     scenes.push(new Scene_AudioInfo());
     scenes.push(new Scene_Particles());
+    scenes.push(new Scene_Quad(pg, new Scene_Particles()));
 }
 
 
