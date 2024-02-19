@@ -9,12 +9,18 @@ let current = 0;
 let audioIn;
 
 
-function setup() {
-  createCanvas(windowWidth, windowHeight);
+let pg;
 
-  scenes.push(new Scene_Black());
-  scenes.push(new Scene_AudioInfo());
-  scenes.push(new Scene2());
+
+function setup() {
+    createCanvas(windowWidth, windowHeight);
+    noCursor();
+
+    pg = createGraphics(windowWidth, windowHeight);
+
+    scenes.push(new Scene_Black());
+    scenes.push(new Scene_AudioInfo());
+    scenes.push(new Scene_Particles());
 }
 
 
@@ -27,7 +33,10 @@ function initializeAudioIn() {
 
 
 function draw() {
-    scenes[current].display(audioIn);
+    background(0);
+
+    scenes[current].display(pg, audioIn);
+    image(pg, 0, 0);
 
     fill(128);
     noStroke();
@@ -57,6 +66,7 @@ function mousePressed() {
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
+    pg = createGraphics(windowWidth, windowHeight);
 }
 
 
