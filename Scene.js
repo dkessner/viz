@@ -5,6 +5,7 @@
 
 class Scene {
     name() {return "Unknown";}
+    initialize(pg) {console.log("Initializing scene " + this.name());}
     display(pg) {pg.background(0);}
 }
 
@@ -38,7 +39,7 @@ class Scene_Particles extends Scene {
             p.display(pg);
 
         for (let i=this.particles.length-1; i>=0; i--) {
-            if (this.particles[i].isDead()) {
+            if (this.particles[i].dead) {
                 this.particles.splice(i, 1);
             }
         }

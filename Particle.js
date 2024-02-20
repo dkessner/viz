@@ -10,6 +10,7 @@ class Particle {
         this.acceleration = acceleration.copy();
         this.radius = radius;
         this.color = color;
+        this.dead = false;
     }
 
     display(pg) {
@@ -19,11 +20,10 @@ class Particle {
 
         this.position.add(this.velocity);
         this.velocity.add(this.acceleration);
-    }
 
-    isDead() {
         const threshold = 2000*2000;
-        return this.position.magSq() > threshold;
+        if (this.position.magSq() > threshold)
+            this.dead = true;
     }
 }
 

@@ -55,8 +55,10 @@ function keyPressed() {
     }
 
     number = parseInt(key);
-    if (!isNaN(number) && number < scenes.length)
+    if (!isNaN(number) && number < scenes.length) {
         current = number;
+        scenes[current].initialize(pg);
+    }
 }
 
 
@@ -67,6 +69,8 @@ function mousePressed() {
 
     if (current >= scenes.length)
         current = 0;
+
+    scenes[current].initialize(pg);
 
     return false;
 }

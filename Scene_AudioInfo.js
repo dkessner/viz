@@ -3,8 +3,12 @@
 //
 
 
-class Scene_AudioInfo {
+class Scene_AudioInfo extends Scene {
     name() {return "Audio Info";}
+
+    initialize(pg) {
+        this.particles = []
+    }
 
     display(pg, audioIn) {
         pg.background(0);
@@ -42,23 +46,67 @@ class Scene_AudioInfo {
         const meterWidth = pg.width * .05;
         const meterHeight = pg.height * .5;
 
+        // draw meter outline
+
         pg.noFill();
         pg.stroke(255);
         pg.rect(x0, y0, meterWidth, meterHeight);
-
-        let level = audioIn ? audioIn.getLevel() : 0;
-        let meterLevel = map(level, 0, 1, 0, meterHeight);
-
-        pg.fill(0, 255, 0);
-        pg.noStroke();
-        pg.rect(x0, y0+meterHeight-meterLevel, meterWidth, meterLevel);
 
         pg.stroke(255);
         for (let i=0; i<=10; i++) {
             let y = y0 + meterHeight - map(i, 0, 10, 0, meterHeight);
             pg.line(x0, y, x0 + meterWidth*.2, y);
         }
+
+        // draw level
+
+        let level = audioIn ? audioIn.getLevel() : 0;
+        let meterLevel = map(level, 0, 1, 0, meterHeight);
+
+        pg.fill(0, 255, 0);
+        pg.noStroke();
+        let yMeter = y0+meterHeight-meterLevel;
+        pg.rect(x0, yMeter, meterWidth, meterLevel);
+
+        // create and display particles
+
+        this.particles.push(new Particle(createVector(x0+meterWidth, yMeter), 
+                                        createVector(2, 0),
+                                        createVector(0, 0),
+                                        1, 
+                                        color(255)));
+        for (let p of this.particles) {
+            p.display(pg);
+            if (p.position.x > pg.width * .9)
+                p.dead = true;
+        }
+
+
+        pg.stroke(0, 255, 0);
+        pg.strokeWeight(2);
+
+        for (let i=0; i<this.particles.length-1; i++) {
+            let x0 = this.particles[i].position.x;            
+            let x1 = this.particles[i+1].position.x;            
+            let y0 = this.particles[i].position.y;            
+            let y1 = this.particles[i+1].position.y;            
+            pg.line(x0, y0, x1, y1);
+        }
+
+        //pg.stroke(128);
+        //pg.text("Particles: " + this.particles.length, x0 + meterWidth*2, y0);
+
+        // kill dead particles
+
+        for (let i=this.particles.length-1; i>=0; i--) {
+            if (this.particles[i].dead) {
+                this.particles.splice(i, 1);
+            }
+        }
+
     }
+
+    particles;
 }
 
 
