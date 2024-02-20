@@ -67,6 +67,8 @@ function mousePressed() {
 
     if (current >= scenes.length)
         current = 0;
+
+    return false;
 }
 
 
