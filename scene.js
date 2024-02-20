@@ -58,6 +58,17 @@ class Scene_Particles extends Scene {
 
         for (let p of this.particles)
             p.display(pg);
+
+        for (let i=this.particles.length-1; i>=0; i--) {
+            if (this.particles[i].isDead()) {
+                this.particles.splice(i, 1);
+            }
+        }
+
+        pg.fill(128);
+        pg.noStroke();
+        pg.textSize(20);
+        pg.text("particle count: " + this.particles.length, 50, 50);
     }
 
     createParticles(pg, rate) {

@@ -20,6 +20,11 @@ class Particle {
         this.position.add(this.velocity);
         this.velocity.add(this.acceleration);
     }
+
+    isDead() {
+        const threshold = 2000*2000;
+        return this.position.magSq() > threshold;
+    }
 }
 
 
