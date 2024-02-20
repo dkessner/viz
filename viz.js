@@ -62,6 +62,11 @@ function keyPressed() {
 
 function mousePressed() {
     if (!audioIn) initializeAudioIn();
+
+    current++;
+
+    if (current >= scenes.length)
+        current = 0;
 }
 
 
