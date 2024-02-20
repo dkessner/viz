@@ -41,7 +41,7 @@ function draw() {
 
     fill(128);
     noStroke();
-    textSize(32);
+    textSize(height/30);
     text("Scene: " + current + " " + scenes[current].name(), 50, height-50);
 }
 
