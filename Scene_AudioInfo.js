@@ -10,12 +10,13 @@ class Scene_AudioInfo extends Scene {
         this.particles = []
     }
 
-    display(pg, audioIn) {
+    display(pg, audioIn, fft) {
         pg.background(0);
 
         this.displayText(pg, audioIn);
         this.displayBall(pg, audioIn);
         this.displayMeter(pg, audioIn);
+        this.displayFFT(pg, audioIn, fft);
     }
 
     displayText(pg, audioIn) {
@@ -33,10 +34,10 @@ class Scene_AudioInfo extends Scene {
 
     displayBall(pg, audioIn) {
         let level = audioIn ? audioIn.getLevel() : 0;
-        let r = map(level, 0, 1, width/10, width/4);
+        let r = map(level, 0, 1, pg.width/10, pg.width/4);
         pg.fill(0, 0, 255);
         pg.stroke(255);
-        pg.ellipse(width/2, height/2, r*2, r*2);
+        pg.ellipse(pg.width*.75, pg.height*.15, r*2, r*2);
     }
 
     displayMeter(pg, audioIn) {
@@ -107,6 +108,37 @@ class Scene_AudioInfo extends Scene {
     }
 
     particles;
+
+    displayFFT(pg, audioIn, fft) {
+        let spectrum = fft.analyze();
+
+        let x0 = pg.width*.4;
+        let y0 = pg.width*.25;
+        let w = pg.width * .5;
+        let h = pg.height * .2;
+
+        pg.noFill();
+        pg.beginShape();
+        for (let i=0; i<spectrum.length; i++) {
+            let x = map(i, 0, spectrum.length, x0, x0+w);
+            let y = map(spectrum[i], 0, 255, y0+h, y0);
+            pg.vertex(x, y);
+        }
+        pg.endShape();
+
+        let waveform = fft.waveform();
+
+        y0 = pg.width*.5;
+
+        pg.noFill();
+        pg.beginShape();
+        for (let i=0; i<waveform.length; i++) {
+            let x = map(i, 0, waveform.length, x0, x0+w);
+            let y = map(waveform[i], -1, 1, y0+h, y0);
+            pg.vertex(x, y);
+        }
+        pg.endShape();
+    }
 }
 
 

@@ -6,7 +6,7 @@
 let scenes = [];
 let current = 0;
 
-let audioIn;
+let audioIn, fft;
 
 
 let pg;
@@ -26,17 +26,20 @@ function setup() {
 
 
 function initializeAudioIn() {
-  console.log("Initializing audio input.");
-  userStartAudio();
-  audioIn = new p5.AudioIn();
-  audioIn.start();
+    console.log("Initializing audio input.");
+    userStartAudio();
+    audioIn = new p5.AudioIn();
+    audioIn.start();
+
+    fft = new p5.FFT();
+    fft.setInput(audioIn);
 }
 
 
 function draw() {
     background(0);
 
-    scenes[current].display(pg, audioIn);
+    scenes[current].display(pg, audioIn, fft);
     image(pg, 0, 0);
 
     fill(128);
